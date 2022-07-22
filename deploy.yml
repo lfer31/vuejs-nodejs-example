@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deploy
+  # namespace: flora-ns
+  labels:
+    app: webapp
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: localhost:5000/vueapp
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: America/Guatemala
+          ports:
+            - containerPort: 3080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-svc
+  # namespace: flora-ns
+  labels:
+    app: webapp
+spec:
+  selector:
+    app: webapp
+  type: NodePort
+  ports:
+    - port: 3080
+      targetPort: 3080
+      nodePort: 30080

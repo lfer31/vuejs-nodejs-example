@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        Vue.js With NodeJS
+        Vue.js With NodeJS (v2)
     </div>
 </template>
 
